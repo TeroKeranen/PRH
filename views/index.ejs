@@ -31,13 +31,9 @@
                     <p><span>Yrityksen nimi: </span><%= name %> </p>
                     <!-- iterate streets and display them -->
                     <% for (let i = 0; i < street.length ; i++) { %>
-                        <!-- when i is 0, it add 1 on it so addres will display like this : address 1, address 2 etc...   -->
-                        <% if (i === 0) { %>
+                        
                             <p><span>Osoite <%=i + 1%> :</span> <%=street[i] %>, <%=cities[i]%>, <%=postcode[i]%></p>
-                        <% } else { %>
-                            <p><span>Osoite <%=i + 1%> :</span> <%=street[i] %>, <%=cities[i]%>, <%=postcode[i]%></p>
-                        <%} %>
-                            
+                                                  
                     <% } %>
 
                         <p><span>luokituksen koodi: </span><%= busslineCode %></p>

@@ -54,7 +54,7 @@ app.post("/businessid", async (req,res) => {
                     let companyName, id, businessLines, websiteUrl,businessLineCode, businessLineName,adresses, streetsArr, citiesArr, postcodeArr;
                     let jsonResults = data.results; // Get company data
 
-                    console.log(jsonResults.addresses)
+                    
                     // loop companys data
                     jsonResults.forEach((item) => {
                         
@@ -113,7 +113,7 @@ app.post("/businessid", async (req,res) => {
                                 streets.push(address.street)
                                 cities.push(address.city)
                                 postcodes.push(address.postCode)
-                                // if street value is not in streets array, push it to array 
+                                 
                             }
 
                                 
