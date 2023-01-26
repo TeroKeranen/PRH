@@ -27,7 +27,7 @@ span {
 p {
     margin: 10px;
     font-size: 2rem;
-    background-image: linear-gradient(to bottom, #0ab48f, #09705f);
+    background-image: linear-gradient(to bottom, #27b193, #09705f);
     padding: 1rem;
     border-radius: 16px;
     font-weight: 300;
@@ -122,6 +122,11 @@ p {
 .addresses {
     width: 80%;
     
+}
+.copy {
+    text-align: center;
+    background: rgb(61, 60, 60);
+    color: white;
 }
 
 @media screen and (min-width:785px) {
