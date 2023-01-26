@@ -33,10 +33,10 @@ app.post("/businessid", async (req,res) => {
     // Get user business id input
     let businessId = req.body.businessId;
     
-    // get data 
+    // get data function. functions parameter consist of the searchUrl and the id
     async function getData(url) {
             
-
+            // fetch resource from a server
             await fetch(url)
                 .then(response => {
                     if (response.ok) {
@@ -51,13 +51,14 @@ app.post("/businessid", async (req,res) => {
                     }
                 })
                 .then((data) => {
-                    
+                    // variables we need
                     let companyName, id, businessLines,websites, websiteUrl,businessLineCode, businessLineName,adresses, wholeAddress, streetsArr, citiesArr, postcodeArr;
                     let jsonResults = data.results; // Get company data
 
+                    // loop companys data
                     jsonResults.forEach((item) => {
                         
-                        // Katsotaan löytyykö businessLines tietoja 
+                        // if there is no businesslines information or its empthy it will display something on page 
                         if (item.businessLines.length <= 0) {
                             businessLineCode = "BusinessLineCode tietoa ei ole saatavilla";
                             businessLineName = "BusinessLineName tietoa ei ole saatavilla";
@@ -66,24 +67,27 @@ app.post("/businessid", async (req,res) => {
                             businessLines = item.businessLines;
                             // Iterate businessline and take needed values to variables
                             businessLines.forEach((type) => {
-                                
+                                // take an item that has language value as Finland
                                 if(type.language === "FI") {
                                     
+                                    // get code and name from the object
                                     businessLineCode = type.code;
                                     businessLineName = type.name
                                 }
                             })
                         }
 
-                        // katsotaan löytyykö nettisivuja
+                        // if there is no contactDetails display something on page
                         if (item.contactDetails.length <= 0) {
                             websiteUrl = "Nettisivuja ei löydettävissä";
 
                         } else {
+                            // if contactDetails is not empthy check if object language is Finland and and check if there is website url
                             item.contactDetails.forEach((type) => {
                                 if(type.type === "Kotisivun www-osoite" && type.language === "FI") {
                                     websiteUrl = type.value;
                                 } else {
+                                    // if there is no website url display this on the page
                                     websiteUrl = "Nettisivuja ei löydettävissä"
                                 }
                             })
@@ -94,18 +98,20 @@ app.post("/businessid", async (req,res) => {
                         adresses = item.addresses; // save adresses to variable
                         
                         
-                        let streets = []
-                        let postcodes = []
-                        let cities = []
+                        let streets = [] // save streets values inside the array
+                        let postcodes = [] // save postcode values inside the array
+                        let cities = [] // save city values inside the array
                         
+                        // Loop companys addresses
                         adresses.forEach((address) => {
                             
                             
                             
 
-
+                            // if  streets array includin looped value then dont do anything
                             if (streets.includes(address.street)) {
-                                
+                            
+                                // if street value is not in streets array, push it to array 
                             } else {
                                 streets.push(address.street)
                                 cities.push(address.city)
@@ -115,7 +121,7 @@ app.post("/businessid", async (req,res) => {
                                 
                             
                         })
-                        
+                        // Use this when rendering values to page
                         streetsArr = streets
                         citiesArr =  cities
                         postcodeArr = postcodes
@@ -141,6 +147,7 @@ app.post("/businessid", async (req,res) => {
         
     }
     
+    // call function with constant searchUrl and with the id value given by the customer
     getData(searchUrl+businessId);
     
 })

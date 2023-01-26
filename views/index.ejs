@@ -23,30 +23,27 @@
         
             <div class="company-info">
                 <div class="addresses">
+                    <!-- If there is an error it will display on screen -->
                 <% if (errorDisplay) { %>
                     <p><%= errorType %></p>
                 <% } else { %>
+
                     <p><span>Name: </span><%= name %> </p>
-                    
-                    
-                        <% for (let i = 0; i < street.length ; i++) { %>
-                            <% if (i === 0) { %>
-                                <p>Osoite <%=i + 1%> :<%=street[i] %>, <%=cities[i]%>, <%=postcode[i]%></p>
-                            <% } else { %>
-                                <p>Osoite <%= i +1 %>   :<%=street[i] %>, <%=cities[i]%>, <%=postcode[i]%></p>
-                            <%} %>
+                    <!-- iterate streets and display them -->
+                    <% for (let i = 0; i < street.length ; i++) { %>
+                        <!-- when i is 0, it add 1 on it so addres will display like this : address 1, address 2 etc...   -->
+                        <% if (i === 0) { %>
+                            <p><span>Osoite <%=i + 1%> :</span> <%=street[i] %>, <%=cities[i]%>, <%=postcode[i]%></p>
+                        <% } else { %>
+                            <p><span>Osoite <%=i + 1%> :</span> <%=street[i] %>, <%=cities[i]%>, <%=postcode[i]%></p>
+                        <%} %>
                             
-                        <% } %>
-                        <p><span>BusinesslineCode: </span>
-                            <%= busslineCode %>
-                        </p>
-                        <p><span>BusinesslineName: </span>
-                            <%= busslineName %>
-                        </p>
-                        <p><span>website: </span>
-                            <%= website %>
-                        </p>
-                    </div>
+                    <% } %>
+
+                        <p><span>BusinesslineCode: </span><%= busslineCode %></p>
+                        <p><span>BusinesslineName: </span><%= busslineName %></p>
+                        <p><span>website: </span><%= website %></p>
+                </div>
                     
                     
                 <% } %>
