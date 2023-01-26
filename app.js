@@ -23,8 +23,7 @@ app.get("/", (req,res) => {
 
 app.post("/businessid", async (req,res) => {
 
-    // get url (no need)
-    const URL = "https://avoindata.prh.fi/bis/v1?totalResults=false&maxResults=10&resultsFrom=0&companyRegistrationFrom=2014-02-28"
+    
     // SearchUrl 
     const searchUrl = "https://avoindata.prh.fi/bis/v1?totalResults=false&maxResults=10&resultsFrom=0&businessId="
     
@@ -52,9 +51,10 @@ app.post("/businessid", async (req,res) => {
                 })
                 .then((data) => {
                     // variables we need
-                    let companyName, id, businessLines,websites, websiteUrl,businessLineCode, businessLineName,adresses, wholeAddress, streetsArr, citiesArr, postcodeArr;
+                    let companyName, id, businessLines, websiteUrl,businessLineCode, businessLineName,adresses, streetsArr, citiesArr, postcodeArr;
                     let jsonResults = data.results; // Get company data
 
+                    console.log(jsonResults.addresses)
                     // loop companys data
                     jsonResults.forEach((item) => {
                         
@@ -158,5 +158,5 @@ if (port == null || port == "") {
 }
 
 app.listen(port, function() {
-    console.log("Server started on port 3000");
+    console.log(`Server started on port ${port}`);
 })
