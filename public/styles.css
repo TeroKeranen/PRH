@@ -26,7 +26,7 @@ span {
 }
 p {
     margin: 10px;
-    font-size: 2rem;
+    font-size: 2vh;
     background-image: linear-gradient(to bottom, #27b193, #09705f);
     padding: 1rem;
     border-radius: 16px;
