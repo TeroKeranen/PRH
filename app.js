@@ -109,13 +109,11 @@ app.post("/businessid", async (req,res) => {
                             
 
                             // if  streets array includin looped value then dont do anything
-                            if (streets.includes(address.street)) {
-                            
-                                // if street value is not in streets array, push it to array 
-                            } else {
+                            if (!streets.includes(address.street)) {
                                 streets.push(address.street)
                                 cities.push(address.city)
                                 postcodes.push(address.postCode)
+                                // if street value is not in streets array, push it to array 
                             }
 
                                 
