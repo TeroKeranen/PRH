@@ -8,23 +8,51 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <main>
+        <section class="login-form">
+            <form action="/businessid" method="post">
+                <h1>Etsi yritystiedot</h1>
+                <label for="businessId">Add businessId: </label>
+                <input type="text" id="businessId" name="businessId" placeholder="businessId">
+                
+                <button type="submit">submit</button>
+            </form>
+        </section>
 
-    <form action="/businessid" method="post">
-        <label for="businessId">add businessId</label>
-        <input type="text" id="businessId" name="businessId">
+        <div class="info">
         
-        <button type="submit">submit</button>
-    </form>
-
-    <main id="main">
+            <div class="company-info">
+                <div class="addresses">
+                <% if (errorDisplay) { %>
+                    <p><%= errorType %></p>
+                <% } else { %>
+                    <p><span>Name: </span><%= name %> </p>
+                    
+                    
+                        <% for (let i = 0; i < street.length ; i++) { %>
+                            <% if (i === 0) { %>
+                                <p>Osoite <%=i + 1%> :<%=street[i] %>, <%=cities[i]%>, <%=postcode[i]%></p>
+                            <% } else { %>
+                                <p>Osoite <%= i +1 %>   :<%=street[i] %>, <%=cities[i]%>, <%=postcode[i]%></p>
+                            <%} %>
+                            
+                        <% } %>
+                        <p><span>BusinesslineCode: </span>
+                            <%= busslineCode %>
+                        </p>
+                        <p><span>BusinesslineName: </span>
+                            <%= busslineName %>
+                        </p>
+                        <p><span>website: </span>
+                            <%= website %>
+                        </p>
+                    </div>
+                    
+                    
+                <% } %>
+            </div>
         
-
-        
-        <%= name %>
-        <%= address %>
-        <%= bussline %>
-        
+        </div>
     </main>
 
 </body>

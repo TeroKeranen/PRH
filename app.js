@@ -17,7 +17,7 @@ app.get("/", (req,res) => {
 
     
     
-        res.render('index', {name:"companyName", address: "wholeAddress", bussline: "businessLines" })
+        res.render('index', {name:"-",website: "-", street: "-", cities: "-", postcode: "-", busslineCode: "-",busslineName: "-", errorDisplay : false,errorType: "" })
 })
 
 
@@ -35,7 +35,7 @@ app.post("/businessid", async (req,res) => {
     
     // get data 
     async function getData(url) {
-
+            
 
             await fetch(url)
                 .then(response => {
@@ -43,56 +43,96 @@ app.post("/businessid", async (req,res) => {
                         return response.json();
                     } else {
                         console.error(response.status, response.statusText)
+                        // if bad Url request trow urierror
+                        if (response.status == 400) {
+                            throw URIError
+                        }
+
                     }
                 })
                 .then((data) => {
                     
-                    let companyName, id, businessLines,adresses, wholeAddress;
+                    let companyName, id, businessLines,websites, websiteUrl,businessLineCode, businessLineName,adresses, wholeAddress, streetsArr, citiesArr, postcodeArr;
                     let jsonResults = data.results; // Get company data
 
                     jsonResults.forEach((item) => {
+                        
                         // Katsotaan löytyykö businessLines tietoja 
                         if (item.businessLines.length <= 0) {
-                            businessLines = "BusinessLines tietoa ei ole saatavilla";
+                            businessLineCode = "BusinessLineCode tietoa ei ole saatavilla";
+                            businessLineName = "BusinessLineName tietoa ei ole saatavilla";
+                            
                         } else {
                             businessLines = item.businessLines;
+                            // Iterate businessline and take needed values to variables
+                            businessLines.forEach((type) => {
+                                
+                                if(type.language === "FI") {
+                                    
+                                    businessLineCode = type.code;
+                                    businessLineName = type.name
+                                }
+                            })
+                        }
+
+                        // katsotaan löytyykö nettisivuja
+                        if (item.contactDetails.length <= 0) {
+                            websiteUrl = "Nettisivuja ei löydettävissä";
+
+                        } else {
+                            item.contactDetails.forEach((type) => {
+                                if(type.type === "Kotisivun www-osoite" && type.language === "FI") {
+                                    websiteUrl = type.value;
+                                } else {
+                                    websiteUrl = "Nettisivuja ei löydettävissä"
+                                }
+                            })
                         }
 
                         companyName = item.name; // save companys name to variable
                         id = item.businessId;    // save companys id to variable
                         adresses = item.addresses; // save adresses to variable
                         
-
+                        
+                        let streets = []
+                        let postcodes = []
+                        let cities = []
+                        
                         adresses.forEach((address) => {
-                            let city,street,postcode;
+                            
+                            
+                            
 
-                            for (const [key,value] of Object.entries(address)) {
 
-                                // check if key is what whe want and save it into variable
-                                if(key === "street"){
-                                    street = value
-                                } 
-                                // check if key is what whe want and save it into variable
-                                if (key === "postCode") {
-                                    postcode = value
-                                }
-                                // check if key is what whe want and save it into variable
-                                if (key === "city") {
-                                    city = value;
-                                }
+                            if (streets.includes(address.street)) {
+                                
+                            } else {
+                                streets.push(address.street)
+                                cities.push(address.city)
+                                postcodes.push(address.postCode)
                             }
-                            // save iterated address informations to own variable so we can pass whole address to website 
-                            wholeAddress = `${street}, ${city}, ${postcode}`
+
+                                
                             
                         })
                         
+                        streetsArr = streets
+                        citiesArr =  cities
+                        postcodeArr = postcodes
+                            
                     })
                     
-                    res.render('index', {name:companyName, address: wholeAddress, bussline: businessLines, error: err })
+                    
+                    res.render('index', {name:companyName, website: websiteUrl, street: streetsArr,cities:citiesArr,postcode:postcodeArr, busslineCode: businessLineCode,busslineName: businessLineName, errorDisplay : false, errorType: "" })
                 })
+                
                 .catch(error => {
                     
-                    console.error(error)
+                        // When catching error show error on page
+                        res.render('index', {name:"companyName",website: "website", street: "street",cities:"cities",postcode:"postcode", busslineCode: "businessLineCode",busslineName: "businessLineName", errorDisplay : true, errorType: error.name })
+                    
+                    
+                    
                 })
 
             
